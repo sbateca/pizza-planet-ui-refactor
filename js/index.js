@@ -6,12 +6,12 @@
 function postOrder(order) {
 
     fetch('http://127.0.0.1:5000/order/', {
-        method: 'POST',
-        body: JSON.stringify(order),
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-        },
-    })
+            method: 'POST',
+            body: JSON.stringify(order),
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+        })
         .then(res => res.json())
         .then(res => showNotification());
 
@@ -36,7 +36,7 @@ orderForm.submit(event => {
  */
 function getOrderData() {
     let ingredients = [];
-    $.each($("input[name='ingredients']:checked"), function (el) {
+    $.each($("input[name='ingredients']:checked"), function(el) {
         ingredients.push($(this).val());
     });
 
@@ -72,6 +72,17 @@ function fetchIngredients() {
         });
 }
 
+
+function fetchBeverages() {
+    fetch('http://127.0.0.1:5000/beverage/')
+        .then(response => response.json())
+        .then(beverages => {
+            let rows = beverages.map(element => createBeverageTemplate(element));
+            let table = $("#beverages tbody");
+            table.append(rows);
+        });
+}
+
 function fetchOrderSizes() {
     fetch('http://127.0.0.1:5000/size/')
         .then(response => response.json())
@@ -94,6 +105,7 @@ function createSizeTemplate(size) {
 
 function loadInformation() {
     fetchIngredients();
+    fetchBeverages();
     fetchOrderSizes();
 }
 
